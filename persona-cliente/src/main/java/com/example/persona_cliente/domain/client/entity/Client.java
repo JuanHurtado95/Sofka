@@ -15,9 +15,9 @@ import lombok.*;
 public class Client extends Person {
 
 
-    @Column(name = "contrasena", unique = true, nullable = false)
+    @Column(name = "contrasena", nullable = false)
     private String password;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado")
     private boolean status;
 }

@@ -2,6 +2,7 @@ package com.example.cuenta_movimiento.infraestructure.account.controller;
 
 import com.example.cuenta_movimiento.domain.account.dto.AccountDTO;
 import com.example.cuenta_movimiento.domain.account.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
         AccountDTO createdAccount = accountService.createAccount(accountDTO);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
@@ -35,7 +36,7 @@ public class AccountController {
     }
 
     @PutMapping("/{accountId}")
-    public ResponseEntity<AccountDTO> updateAccount(@PathVariable Long accountId, @RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<AccountDTO> updateAccount(@PathVariable Long accountId, @Valid @RequestBody AccountDTO accountDTO) {
         AccountDTO updatedAccount = accountService.updateAccount(accountId, accountDTO);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }

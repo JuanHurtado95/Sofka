@@ -3,6 +3,8 @@ package com.example.cuenta_movimiento.domain.report.service;
 import com.example.cuenta_movimiento.domain.report.dto.*;
 import com.example.cuenta_movimiento.infraestructure.movement.repository.MovementRepository;
 import com.example.cuenta_movimiento.infraestructure.report.repository.ReportRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class ReportServiceImpl implements IReportService{
 
     @Autowired
     private MovementRepository movementRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public ReportResponseDTO report(ReportRequestDTO request) {
@@ -67,13 +72,18 @@ public class ReportServiceImpl implements IReportService{
     }
 
     @Cacheable(value = "clients", key = "#clientId")
+    @CircuitBreaker(name = "clientService", fallbackMethod = "clientFallback")
     private String clientConsult(Long clientId) {
         String url = "http://localhost:8080/api/v1/clientes/" + clientId;
         ClientReportDTO clientReportDTO = restTemplate.getForObject(url, ClientReportDTO.class);
-        if(clientReportDTO != null){
+        if (clientReportDTO != null) {
             return clientReportDTO.getName();
-        }else{
+        } else {
             throw new RuntimeException("Client not found");
         }
+    }
+
+    private String clientFallback(Long clientId, Throwable throwable) {
+        return "Default client name";
     }
 }

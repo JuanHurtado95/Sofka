@@ -2,6 +2,7 @@ package com.example.persona_cliente.infraestructure.client.controller;
 
 import com.example.persona_cliente.domain.client.dto.ClientDTO;
 import com.example.persona_cliente.domain.client.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO clientDTO) {
         return ResponseEntity.ok(clientService.createClient(clientDTO));
     }
 
@@ -37,7 +38,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id, @Valid @RequestBody ClientDTO clientDTO) {
         return ResponseEntity.ok(clientService.updateClient(id, clientDTO));
     }
 

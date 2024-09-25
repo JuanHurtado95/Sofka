@@ -3,6 +3,7 @@ package com.example.cuenta_movimiento.infraestructure.movement.controller;
 import com.example.cuenta_movimiento.domain.movement.dto.MovementDTO;
 import com.example.cuenta_movimiento.domain.movement.service.MovementService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class MovementController {
     private MovementService movementService;
 
     @PostMapping
-    public ResponseEntity<MovementDTO> createMovement(@RequestBody MovementDTO movementDTO) throws JsonProcessingException {
+    public ResponseEntity<MovementDTO> createMovement(@Valid @RequestBody MovementDTO movementDTO) throws JsonProcessingException {
         MovementDTO createdMovement = movementService.createMovement(movementDTO);
         return new ResponseEntity<>(createdMovement, HttpStatus.CREATED);
     }
@@ -36,7 +37,7 @@ public class MovementController {
     }
 
     @PutMapping("/{movementId}")
-    public ResponseEntity<MovementDTO> updateMovement(@PathVariable Long movementId, @RequestBody MovementDTO movementDTO) {
+    public ResponseEntity<MovementDTO> updateMovement(@PathVariable Long movementId, @Valid @RequestBody MovementDTO movementDTO) {
         MovementDTO updatedMovement = movementService.updateMovement(movementId, movementDTO);
         return new ResponseEntity<>(updatedMovement, HttpStatus.OK);
     }

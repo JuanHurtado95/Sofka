@@ -3,6 +3,7 @@ package com.example.cuenta_movimiento.infraestructure.report.controller;
 import com.example.cuenta_movimiento.domain.report.dto.ReportRequestDTO;
 import com.example.cuenta_movimiento.domain.report.dto.ReportResponseDTO;
 import com.example.cuenta_movimiento.domain.report.service.IReportService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class ReportController {
     private IReportService reportService;
 
     @PostMapping
-    public ResponseEntity<ReportResponseDTO> generateReport(@RequestBody ReportRequestDTO request) {
+    public ResponseEntity<ReportResponseDTO> generateReport(@Valid @RequestBody ReportRequestDTO request) {
         ReportResponseDTO report = reportService.report(request);
         return ResponseEntity.ok(report);
     }
